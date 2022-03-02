@@ -1,6 +1,4 @@
 
-/*created by prashant shukla */
-
 var paddle2 =10,paddle1=10;
 
 var paddle1X = 10,paddle1Height = 110;
@@ -22,11 +20,23 @@ var ball = {
 }
 
 function setup(){
-  var canvas =  createCanvas(700,600);
+  canvas = createCanvas(700, 600);
+	canvas.parent('canvas');
+	video = createCapture(VIDEO);
+    video.hide();
+  
+    poseNet = ml5.poseNet(video, modelLoaded);
+    poseNet.on('pose', gotPoses );
+  
+}
+
+function modelLoaded(){
+  console.log("model is loaded");
 }
 
 
-function draw(){
+function draw(){ 
+  image(video, 0, 0, 700, 600);      
 
  background(0); 
 
@@ -153,7 +163,7 @@ function models(){
 }
 
 
-//this function help to not go te paddle out of canvas
+//this function help the paddle not to go out of the screen
 function paddleInCanvas(){
   if(mouseY+paddle1Height > height){
     mouseY=height-paddle1Height;
